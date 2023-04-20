@@ -30,9 +30,86 @@ namespace MyPracticWebStore.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Category item)
         {
-            _db.Category.Add(item);
+            if (ModelState.IsValid)
+            {
+                _db.Category.Add(item);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(item); 
+        }
+
+        //GET - EDIT
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var item = _db.Category.Find(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+
+
+            return View(item);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Category item)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Category.Update(item);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            return View(item);
+        }
+
+
+        //GET - DELETE
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var item = _db.Category.Find(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+
+
+            return View(item);
+        }
+
+        //POST - DELETE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeletePost(int? id)
+        {
+            var item = _db.Category.Find(id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            _db.Category.Remove(item);
             _db.SaveChanges();
             return RedirectToAction("Index");
+            
+
         }
     }
 }
