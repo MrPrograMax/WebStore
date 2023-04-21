@@ -9,6 +9,8 @@ namespace MyPracticWebStore.Data
         { }
 
         public DbSet<Category> Category { get; set; }
+        public DbSet<Product> Product { get; set; }
+
 
     }
 }
