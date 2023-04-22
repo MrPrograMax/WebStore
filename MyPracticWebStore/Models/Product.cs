@@ -13,6 +13,9 @@ namespace MyPracticWebStore.Models
         [Display(Name = "Name")]
         public string Name { get; set; }
 
+        [Display(Name = "Short Description")]
+        public string ShortDescription { get; set; }
+
         [Display(Name = "Description")]
         public string Description { get; set; }
 
