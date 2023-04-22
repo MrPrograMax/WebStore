@@ -28,6 +28,15 @@ namespace MyPracticWebStore
             services.AddDbContext<ApplicationDbContext>(options => 
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnetction")));
 
+            services.AddHttpContextAccessor();
+
+            services.AddSession(Options =>
+            {
+                Options.IdleTimeout = TimeSpan.FromMinutes(10);
+                Options.Cookie.HttpOnly = true;
+                Options.Cookie.IsEssential = true;
+            });
+
             services.AddControllersWithViews();
         }
 
@@ -50,6 +59,8 @@ namespace MyPracticWebStore
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

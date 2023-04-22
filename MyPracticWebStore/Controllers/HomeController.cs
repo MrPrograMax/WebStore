@@ -34,6 +34,17 @@ namespace MyPracticWebStore.Controllers
             return View(homeVM);
         }
 
+        public IActionResult Details(int id)
+        {
+            DetailsVM detailsVM = new DetailsVM()
+            {
+                Product = _db.Product.Include(u => u.Category).Where(u => u.Id == id).FirstOrDefault(),
+                ExistsInCart = false
+            };
+
+            return View(detailsVM);
+        }
+
         public IActionResult Privacy()
         {
             return View();
