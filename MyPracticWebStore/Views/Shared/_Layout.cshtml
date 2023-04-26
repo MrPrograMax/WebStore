@@ -28,9 +28,12 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-                                Content Managment
-                            </a>
+                            @if (User.IsInRole(WebConstants.AdminRole))
+                            {
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                                    Content Managment
+                                </a>
+                            }
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category</a></li>
                                 <li><a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a></li>
@@ -48,7 +51,7 @@
                                     <i class="fas fa-shopping-cart"></i> &nbsp; (@count)
                                 </a>
                             }
-                            else 
+                            else    
                             {
                                 <a href="#" class="nav-link">
                                     <i class="fas fa-shopping-cart"></i> &nbsp; (0)

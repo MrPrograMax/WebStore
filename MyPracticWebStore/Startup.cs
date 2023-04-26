@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyPracticWebStore.Data;
+using MyPracticWebStore.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +35,9 @@ namespace MyPracticWebStore
                 AddDefaultUI().
                 AddEntityFrameworkStores<ApplicationDbContext>();
 
+            services.AddTransient<EmailService>();
+            services.AddDistributedMemoryCache();
             services.AddHttpContextAccessor();
-
             services.AddSession(Options =>
             {
                 Options.IdleTimeout = TimeSpan.FromMinutes(10);
