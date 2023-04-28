@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
-using MyPracticWebStore.Data;
-using MyPracticWebStore.Models;
-using MyPracticWebStore.Models.ViewModels;
-using MyPracticWebStore.Utility;
+using MyPracticWebStore_DataAccess.Data;
+using MyPracticWebStore_Models;
+using MyPracticWebStore_Models.ViewModels;
+using MyPracticWebStore_Utility;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -122,7 +122,7 @@ namespace MyPracticWebStore.Controllers
                 ProductUserVM.ApplicationUser.PhoneNumber,
                 productListSB.ToString());
 
-            await _emailService.SendEmailAsync("webstoretest@mail.ru", "New order", messageBody);
+            await _emailService.SendEmailAsync("WebStoreGet@yandex.ru", "New order", messageBody);
 
             return RedirectToAction(nameof(InquiryConfirmation));
         }

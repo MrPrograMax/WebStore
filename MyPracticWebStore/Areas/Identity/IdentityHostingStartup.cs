@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MyPracticWebStore.Data;
+using MyPracticWebStore_DataAccess.Data;
 
 [assembly: HostingStartup(typeof(MyPracticWebStore.Areas.Identity.IdentityHostingStartup))]
 namespace MyPracticWebStore.Areas.Identity

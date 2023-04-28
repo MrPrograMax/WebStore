@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MyPracticWebStore.Data;
-using MyPracticWebStore.Models;
+using MyPracticWebStore_DataAccess.Data;
+using MyPracticWebStore_Models;
 using System.Collections.Generic;
 
 namespace MyPracticWebStore.Controllers

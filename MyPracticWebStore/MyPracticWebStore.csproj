@@ -24,4 +24,10 @@
     <Folder Include="wwwroot\images\product\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MyPracticWebStore_Utility\MyPracticWebStore_Utility.csproj" />
+    <ProjectReference Include="..\WebPracticWebStore_DataAccess\MyPracticWebStore_DataAccess.csproj" />
+    <ProjectReference Include="..\WebPracticWebStore_Models\WebPracticWebStore_Models.csproj" />
+  </ItemGroup>
+
 </Project>

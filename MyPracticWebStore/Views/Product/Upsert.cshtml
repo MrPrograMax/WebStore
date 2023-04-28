@@ -1,4 +1,4 @@
-﻿@model MyPracticWebStore.Models.ViewModels.ProductVM
+﻿@model MyPracticWebStore_Models.ViewModels.ProductVM
 
 @{
     var title = "Create Product";
@@ -10,14 +10,14 @@
         title = "Edit Product";
         <input asp-for="Product.Id" hidden />
     }
-    <div class="border p-3">
+    <div class="border p-3 bg-white">
         <div class="form-group row">
             <h2 class="text-info pl-3">@title</h2>
         </div>
         <div class="row">
             <div class="col-8">
 
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-4">
                         <label asp-for="Product.Name"></label>
                     </div>
@@ -28,7 +28,7 @@
 
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-4">
                         <label asp-for="Product.Price"></label>
                     </div>
@@ -38,7 +38,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-4">
                         <label asp-for="Product.ShortDescription"></label>
                     </div>
@@ -48,7 +48,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-4">
                         <label asp-for="Product.Description"></label>
                     </div>
@@ -58,12 +58,12 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-4">
                         <label asp-for="Product.CategoryId"></label>
                     </div>
                     <div class="col-8">
-                        <select asp-for="Product.CategoryId" asp-items="@Model.CategorySelectList" class="form-control">
+                        <select asp-for="Product.CategoryId" asp-items="@Model.CategorySelectList" class="form-select">
                             <option disabled selected>--Select Category--</option>
                         </select>
                         <span asp-validation-for="Product. CategoryId" class="text-danger"></span>
@@ -79,17 +79,17 @@
                     </div>
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group row py-2">
                     <div class="col-8 offset-4 row">
                         <div class="col">
                             @if (Model.Product.Id != 0)
                             {
-                            //Update
+                                //Update
                                 <input type="submit" class="btn btn-info w-100" value="Update" />
                             }
                             else
                             {
-                //Create
+                                //Create
                                 <input type="submit" onclick="return validateInput()" class="btn btn-primary w-100" value="Create" />
                             }
                         </div>
@@ -103,7 +103,7 @@
                 @* Keep this empty *@
                 @if (Model.Product.Id != 0)
                 {
-                    <img src="@WebConstants.ImagePath@Model.Product.Image" width="100%" style="border-radius: 5px; border 1px solid #bbb" />
+                    <img src="@MyPracticWebStore_Utility.WebConstants.ImagePath@Model.Product.Image" width="100%" style="border-radius: 5px; border 1px solid #bbb" />
                 }
             </div>
         </div>

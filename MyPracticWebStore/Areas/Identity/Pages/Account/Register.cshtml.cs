@@ -13,7 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using MyPracticWebStore.Models;
+using MyPracticWebStore_Models;
+using MyPracticWebStore_Utility;
 
 namespace MyPracticWebStore.Areas.Identity.Pages.Account
 {

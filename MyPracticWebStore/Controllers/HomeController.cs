@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using MyPracticWebStore.Data;
-using MyPracticWebStore.Models;
-using MyPracticWebStore.Models.ViewModels;
-using MyPracticWebStore.Utility;
+using MyPracticWebStore_DataAccess.Data;
+using MyPracticWebStore_Models;
+using MyPracticWebStore_Models.ViewModels;
+using MyPracticWebStore_Utility;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -62,7 +62,7 @@ namespace MyPracticWebStore.Controllers
         }
 
         [HttpPost, ActionName("Details")]
-        public IActionResult DetailsPost(int id)
+        public IActionResult DetailsPost(int id, DetailsVM detailsVM)
         {
             List<ShoppingCart> shoppingCartsList = new List<ShoppingCart>();
 
@@ -72,7 +72,7 @@ namespace MyPracticWebStore.Controllers
                 shoppingCartsList = HttpContext.Session.Get<List<ShoppingCart>>(WebConstants.SessionCart);
             }
 
-            shoppingCartsList.Add(new ShoppingCart { ProductId = id });
+            shoppingCartsList.Add(new ShoppingCart { ProductId = id, Count = detailsVM.Product.TempCount});
             HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartsList);
 
             return RedirectToAction(nameof(Index));
