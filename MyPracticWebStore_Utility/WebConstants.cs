@@ -4,6 +4,7 @@
     {
         public static string ImagePath = @"\images\product\";
         public static string SessionCart = "ShoppingCartSession";
+        public static string SessionInquiryId = "InquirySession";
 
         public const string AdminRole = "Admin";
         public const string CustomerRole = "Customer";
