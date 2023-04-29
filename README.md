@@ -1,13 +1,28 @@
-# Restaurant E-menu
+# WebStore
 
-It is a web application written in Asp.Net CORE MVC for . Net 5, which is an e-menu restaurant. It allows users to view dishes divided by categories and add them to the shopping cart.
+WebStore is a web application written in Asp.Net CORE MVC for . Net 5, which allows you to create categories and products, add them to the cart, confirm orders and send data about orders to the seller.
 
 ## Using
 
-When you open the site, the user will see a list of available dishes. When choosing a category, all dishes of this category will be shown. The user can add dishes to the basket, specifying the number of each dish.
+### User Roles
 
-When the user is ready to make an order, he can go to the shopping cart and click "Place an order". On the checkout page, the user should specify their contact details. Then he can confirm the order.
+The application supports two user roles:
 
-## Technologies
+- Administrator - can add, delete, edit categories and products, view order information.
+- Ordinary user - can view categories and products, add them to cart, confirm orders.
 
-This app is written on Asp.Net CORE MVC for . Net 5. It uses the PostgreSQL database to store information about categories, dishes and orders. Razor Pages and Bootstrap are used for visual design.
+### Create Categories and Products
+
+To create categories and products you need to login under the administrator account and press "Content Management" on the navigation panel. On this page you can add a new category or product, edit or delete existing ones.
+
+### Add Products to Cart
+
+To add a product to the cart, you need to select the right product, you need to click on "View Details", and then click the add button. After that the product will be added to the cart, which can be viewed by clicking on the "Cart" on the navigation panel.
+
+### Order confirmation
+
+After all the necessary products have been added to the cart, the user must specify the information about himself and confirm the order. After confirmation of the order, the details of the order will be sent to the seller.
+
+### View Order Information
+
+The administrator can view all orders in the "Inquiry Managment" menu. This page displays a list of all orders made by regular users.
