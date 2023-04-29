@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using MyPracticWebStore_DataAccess.Data;
+using MyPracticWebStore_DataAccess.Repository.IRepository;
 using MyPracticWebStore_Models;
 using MyPracticWebStore_Models.ViewModels;
 using MyPracticWebStore_Utility;
@@ -16,21 +17,24 @@ namespace MyPracticWebStore.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _db;
+        private readonly IProductRepository _productRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
+
+        public HomeController(ILogger<HomeController> logger, IProductRepository productRepository, ICategoryRepository categoryRepository)
         {
             _logger = logger;
-            _db = db;
-        }
+            _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
+        } 
 
         public IActionResult Index()
         {
             var homeVM = new HomeVM()
             {
-                Products = _db.Product.Include(item => item.Category),
-                Categories = _db.Category
+                Products = _productRepository.GetAll(includePropirties: "Category"),
+                Categories = _categoryRepository.GetAll()
             };
             return View(homeVM);
         }
@@ -46,7 +50,7 @@ namespace MyPracticWebStore.Controllers
 
             DetailsVM detailsVM = new DetailsVM()
             {
-                Product = _db.Product.Include(u => u.Category).Where(u => u.Id == id).FirstOrDefault(),
+                Product = _productRepository.FirstOrDefault(u => u.Id == id, includePropirties: "Category"),
                 ExistsInCart = false
             };
 

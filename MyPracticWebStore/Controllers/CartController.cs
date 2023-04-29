@@ -15,13 +15,21 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using System.Threading.Tasks;
+using MyPracticWebStore_DataAccess.Repository.IRepository;
+using MyPracticWebStore_DataAccess.Repository;
+using WebPracticWebStore_Models;
+using System;
 
 namespace MyPracticWebStore.Controllers
 {
     [Authorize]
     public class CartController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IProductRepository _productRepository;
+        private readonly IApplicationUserRepository _applicationUserRepository;
+        private readonly IInquiryHeaderRepository _inquiryHeaderRepository;
+        private readonly IInquiryDetailRepository _inquiryDetailRepository;
+
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly EmailService _emailService;
 
@@ -30,11 +38,15 @@ namespace MyPracticWebStore.Controllers
         [BindProperty]
         public ProductUserVM ProductUserVM { get; set; }
 
-        public CartController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment, EmailService emailService)
+        public CartController(IProductRepository productRepository, IApplicationUserRepository applicationUserRepository,
+            IInquiryHeaderRepository inquiryHeaderRepository, IInquiryDetailRepository inquiryDetailRepository,
+            IWebHostEnvironment webHostEnvironment, EmailService emailService)
         {
-            _db = db;
+            _productRepository = productRepository;
+            _applicationUserRepository = applicationUserRepository;
+            _inquiryHeaderRepository = inquiryHeaderRepository;
+            _inquiryDetailRepository = inquiryDetailRepository; 
             _webHostEnvironment = webHostEnvironment;
-            _emailService = 
             _emailService = emailService;
         }
         public IActionResult Index()
@@ -48,7 +60,7 @@ namespace MyPracticWebStore.Controllers
             }
 
             List<int> prodInCart = shoppingCartsList.Select(i => i.ProductId).ToList();
-            IEnumerable<Product> productList = _db.Product.Where(u => prodInCart.Contains(u.Id));
+            IEnumerable<Product> productList = _productRepository.GetAll(u => prodInCart.Contains(u.Id));
 
 
             return View(productList);
@@ -76,11 +88,11 @@ namespace MyPracticWebStore.Controllers
             }
 
             List<int> prodInCart = shoppingCartsList.Select(i => i.ProductId).ToList();
-            IEnumerable<Product> productList = _db.Product.Where(u => prodInCart.Contains(u.Id));
+            IEnumerable<Product> productList = _productRepository.GetAll(u => prodInCart.Contains(u.Id));
 
             ProductUserVM = new ProductUserVM()
             {
-                ApplicationUser = _db.ApplicationUser.FirstOrDefault(u => u.Id == claim.Value),
+                ApplicationUser = _applicationUserRepository.FirstOrDefault(u => u.Id == claim.Value),
                 ProductList = productList.ToList()
             };
 
@@ -92,6 +104,9 @@ namespace MyPracticWebStore.Controllers
         [ActionName("Summary")]
         public async Task<IActionResult> SummaryPost(ProductUserVM productUserVM)
         {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
             var PathToTemplate = _webHostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
                 + "templates" + Path.DirectorySeparatorChar.ToString()
                 + "inquiry.html";
@@ -122,7 +137,31 @@ namespace MyPracticWebStore.Controllers
                 ProductUserVM.ApplicationUser.PhoneNumber,
                 productListSB.ToString());
 
-            await _emailService.SendEmailAsync("WebStoreGet@yandex.ru", "New order", messageBody);
+            await _emailService.SendEmailAsync("webstoretest@mail.ru", "New order", messageBody);
+
+            InquiryHeader inquiryHeader = new InquiryHeader()
+            {
+                ApplicationUserId = claim.Value,
+                FullName = productUserVM.ApplicationUser.FullName,
+                Email = productUserVM.ApplicationUser.Email,
+                PhoneNumber = productUserVM.ApplicationUser.PhoneNumber,
+                InquiryDate = DateTime.Now
+            };
+
+            _inquiryHeaderRepository.Add(inquiryHeader);
+            _inquiryHeaderRepository.Save();
+
+            foreach (var prod in productUserVM.ProductList)
+            {
+                InquiryDetail inquiryDetail = new InquiryDetail()
+                {
+                    InquiryHeaderId = inquiryHeader.Id,
+                    ProductId = prod.Id
+                };
+                _inquiryDetailRepository.Add(inquiryDetail);
+            }
+
+            _inquiryDetailRepository.Save();
 
             return RedirectToAction(nameof(InquiryConfirmation));
         }
