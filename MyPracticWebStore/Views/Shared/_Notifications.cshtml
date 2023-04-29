@@ -1,0 +1,19 @@
+﻿@using MyPracticWebStore_Utility
+
+@if (TempData[WebConstants.Success] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.success('@TempData[WebConstants.Success]');
+    </script>
+}
+@if (TempData[WebConstants.Error] != null)
+{
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.error('@TempData[WebConstants.Error]');
+    </script>
+}
+

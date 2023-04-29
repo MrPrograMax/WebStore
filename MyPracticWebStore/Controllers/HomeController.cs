@@ -79,6 +79,8 @@ namespace MyPracticWebStore.Controllers
             shoppingCartsList.Add(new ShoppingCart { ProductId = id, Count = detailsVM.Product.TempCount});
             HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartsList);
 
+            TempData[WebConstants.Success] = "Item add to cart successfully";
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -100,6 +102,8 @@ namespace MyPracticWebStore.Controllers
             }
 
             HttpContext.Session.Set(WebConstants.SessionCart, shoppingCartsList);
+
+            TempData[WebConstants.Success] = "Item removed from cart successfully";
 
             return RedirectToAction(nameof(Index));
         }  

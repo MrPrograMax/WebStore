@@ -163,6 +163,8 @@ namespace MyPracticWebStore.Controllers
 
             _inquiryDetailRepository.Save();
 
+            TempData[WebConstants.Success] = "Inquiry submitted successfully";
+
             return RedirectToAction(nameof(InquiryConfirmation));
         }
 

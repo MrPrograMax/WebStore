@@ -78,6 +78,8 @@ namespace MyPracticWebStore.Controllers
             _inquiryHeaderRepository.Remove(inquiryHeader);
             _inquiryDetailRepository.Save();
 
+            TempData[WebConstants.Success] = "Action completed successfully";
+
             return RedirectToAction(nameof(Index));
 
         }

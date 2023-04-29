@@ -121,6 +121,9 @@ namespace MyPracticWebStore.Controllers
                 }
 
                 _productRepository.Save();
+
+                TempData[WebConstants.Success] = "Action completed successfully";
+
                 return RedirectToAction("Index");
             }
 
@@ -171,6 +174,9 @@ namespace MyPracticWebStore.Controllers
 
             _productRepository.Remove(item);
             _productRepository.Save();
+
+            TempData[WebConstants.Success] = "Action completed successfully";
+
             return RedirectToAction("Index");
             
 

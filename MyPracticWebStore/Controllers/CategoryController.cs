@@ -2,6 +2,7 @@
 using MyPracticWebStore_DataAccess.Data;
 using MyPracticWebStore_DataAccess.Repository.IRepository;
 using MyPracticWebStore_Models;
+using MyPracticWebStore_Utility;
 using System.Collections.Generic;
 
 namespace MyPracticWebStore.Controllers
@@ -35,8 +36,10 @@ namespace MyPracticWebStore.Controllers
             {
                 _categoryRepository.Add(item);
                 _categoryRepository.Save();
+                TempData[WebConstants.Success] = "Category created successfully";
                 return RedirectToAction("Index");
             }
+            TempData[WebConstants.Error] = "Error while creating category";
 
             return View(item); 
         }
@@ -55,8 +58,6 @@ namespace MyPracticWebStore.Controllers
                 return NotFound();
             }
 
-
-
             return View(item);
         }
 
@@ -68,6 +69,7 @@ namespace MyPracticWebStore.Controllers
             {
                 _categoryRepository.Update(item);
                 _categoryRepository.Save();
+                TempData[WebConstants.Success] = "Action completed successfully";
                 return RedirectToAction("Index");
             }
 
@@ -89,8 +91,6 @@ namespace MyPracticWebStore.Controllers
                 return NotFound();
             }
 
-
-
             return View(item);
         }
 
@@ -108,9 +108,10 @@ namespace MyPracticWebStore.Controllers
 
             _categoryRepository.Remove(item);
             _categoryRepository.Save();
-            return RedirectToAction("Index");
-            
 
+            TempData[WebConstants.Success] = "Action completed successfully";
+
+            return RedirectToAction("Index");
         }
     }
 }
