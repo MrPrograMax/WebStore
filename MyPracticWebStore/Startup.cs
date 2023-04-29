@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyPracticWebStore_DataAccess.Data;
+using MyPracticWebStore_DataAccess.Repository;
+using MyPracticWebStore_DataAccess.Repository.IRepository;
 using MyPracticWebStore_Utility;
 using System;
 using System.Collections.Generic;
@@ -44,6 +46,10 @@ namespace MyPracticWebStore
                 Options.Cookie.HttpOnly = true;
                 Options.Cookie.IsEssential = true;
             });
+
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+
 
             services.AddControllersWithViews();
         }

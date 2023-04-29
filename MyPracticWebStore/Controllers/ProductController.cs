@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyPracticWebStore_DataAccess.Data;
+using MyPracticWebStore_DataAccess.Repository.IRepository;
 using MyPracticWebStore_Models;
 using MyPracticWebStore_Models.ViewModels;
 using MyPracticWebStore_Utility;
@@ -17,18 +18,18 @@ namespace MyPracticWebStore.Controllers
     [Authorize(Roles = WebConstants.AdminRole)]
     public class ProductController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly IProductRepository _productRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(ApplicationDbContext db, IWebHostEnvironment webHostEnvironment)
+        public ProductController(IProductRepository productRepository, IWebHostEnvironment webHostEnvironment)
         {
-            _db = db;
+            _productRepository = productRepository;
             _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Product> itemList = _db.Product.Include(u => u.Category);
+            IEnumerable<Product> itemList = _productRepository.GetAll(includePropirties: "Category");
 
             return View(itemList); 
         }
@@ -40,11 +41,7 @@ namespace MyPracticWebStore.Controllers
             ProductVM productVM = new ProductVM()
             {
                 Product = new Product(),
-                CategorySelectList = _db.Category.Select(i => new SelectListItem
-                {
-                    Text = i.Name,
-                    Value = i.Id.ToString()
-                })
+                CategorySelectList = _productRepository.GetAllDropdownList(WebConstants.CategoryName)
             };
 
             if (id == null)
@@ -53,7 +50,7 @@ namespace MyPracticWebStore.Controllers
             }
             else
             {
-                productVM.Product = _db.Product.Find(id);
+                productVM.Product = _productRepository.Find(id.GetValueOrDefault());
 
                 if (productVM.Product == null)
                 {
@@ -85,16 +82,15 @@ namespace MyPracticWebStore.Controllers
                     {
                         files[0].CopyTo(fileStream);
                     }
-
+                     
                     productVM.Product.Image = fileName + extension;
 
-                    _db.Product.Add(productVM.Product);
+                    _productRepository.Add(productVM.Product);
                 }
                 else
                 {
                     //Updating
-                    var itemFromDb = _db.Product.AsNoTracking().FirstOrDefault(u => u.Id == productVM.Product.Id);
-
+                    var itemFromDb = _productRepository.FirstOrDefault(u => u.Id == productVM.Product.Id, isTracking: false);
                     
                     if (files.Count > 0) //New file already received
                     {
@@ -121,18 +117,14 @@ namespace MyPracticWebStore.Controllers
                         productVM.Product.Image = itemFromDb.Image;
                     }
 
-                    _db.Product.Update(productVM.Product);
-                } 
+                    _productRepository.Update(productVM.Product);
+                }
 
-                _db.SaveChanges();
+                _productRepository.Save();
                 return RedirectToAction("Index");
             }
 
-            productVM.CategorySelectList = _db.Category.Select(i => new SelectListItem
-            {
-                Text = i.Name,
-                Value = i.Id.ToString()
-            });
+            productVM.CategorySelectList = _productRepository.GetAllDropdownList(WebConstants.CategoryName);
 
             return View(productVM); 
         }
@@ -147,7 +139,7 @@ namespace MyPracticWebStore.Controllers
                 return NotFound();
             }
 
-            Product product = _db.Product.Include(p => p.Category).FirstOrDefault(p => p.Id == id);
+            Product product = _productRepository.FirstOrDefault(u => u.Id == id, includePropirties: "Category");
 
             if (product == null)
             {
@@ -162,7 +154,7 @@ namespace MyPracticWebStore.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)
         {
-            var item = _db.Product.Find(id);
+            var item = _productRepository.Find(id.GetValueOrDefault());
 
             if (item == null)
             {
@@ -175,10 +167,10 @@ namespace MyPracticWebStore.Controllers
             if (System.IO.File.Exists(oldFile))
             {
                 System.IO.File.Delete(oldFile);
-            } 
+            }
 
-            _db.Product.Remove(item);
-            _db.SaveChanges();
+            _productRepository.Remove(item);
+            _productRepository.Save();
             return RedirectToAction("Index");
             
 

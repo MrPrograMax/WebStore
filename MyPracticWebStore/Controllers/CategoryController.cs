@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyPracticWebStore_DataAccess.Data;
+using MyPracticWebStore_DataAccess.Repository.IRepository;
 using MyPracticWebStore_Models;
 using System.Collections.Generic;
 
@@ -7,16 +8,16 @@ namespace MyPracticWebStore.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryController(ApplicationDbContext db)
+        public CategoryController(ICategoryRepository categoryRepository)
         {
-            _db = db;
+            _categoryRepository = categoryRepository;
         }
 
         public IActionResult Index()
         {
-            IEnumerable<Category> itemList = _db.Category;
+            IEnumerable<Category> itemList = _categoryRepository.GetAll();
             return View(itemList);
         }
 
@@ -32,8 +33,8 @@ namespace MyPracticWebStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Category.Add(item);
-                _db.SaveChanges();
+                _categoryRepository.Add(item);
+                _categoryRepository.Save();
                 return RedirectToAction("Index");
             }
 
@@ -48,7 +49,7 @@ namespace MyPracticWebStore.Controllers
                 return NotFound();
             }
 
-            var item = _db.Category.Find(id);
+            var item = _categoryRepository.Find(id.GetValueOrDefault());
             if (item == null)
             {
                 return NotFound();
@@ -65,8 +66,8 @@ namespace MyPracticWebStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Category.Update(item);
-                _db.SaveChanges();
+                _categoryRepository.Update(item);
+                _categoryRepository.Save();
                 return RedirectToAction("Index");
             }
 
@@ -82,7 +83,7 @@ namespace MyPracticWebStore.Controllers
                 return NotFound();
             }
 
-            var item = _db.Category.Find(id);
+            var item = _categoryRepository.Find(id.GetValueOrDefault());
             if (item == null)
             {
                 return NotFound();
@@ -98,15 +99,15 @@ namespace MyPracticWebStore.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeletePost(int? id)
         {
-            var item = _db.Category.Find(id);
+            var item = _categoryRepository.Find(id.GetValueOrDefault());
 
             if (item == null)
             {
                 return NotFound();
             }
 
-            _db.Category.Remove(item);
-            _db.SaveChanges();
+            _categoryRepository.Remove(item);
+            _categoryRepository.Save();
             return RedirectToAction("Index");
             
 

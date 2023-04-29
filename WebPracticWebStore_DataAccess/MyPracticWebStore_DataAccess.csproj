@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MyPracticWebStore_Utility\MyPracticWebStore_Utility.csproj" />
     <ProjectReference Include="..\WebPracticWebStore_Models\WebPracticWebStore_Models.csproj" />
   </ItemGroup>
 
