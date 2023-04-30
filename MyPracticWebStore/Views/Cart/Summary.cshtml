@@ -57,18 +57,33 @@
                                         <span class="text-info">Summary:</span>
                                     </h4>
                                     <ul class="list-group mb-3">
+                                        @{
+                                            var orderTotal = 0.0;
+                                        }
+
                                         @for (int i = 0; i < Model.ProductList.Count(); i++)
                                         {
+                                            <input type="hidden" asp-for="@Model.ProductList[i].Id" />
                                             <input type="hidden" asp-for="@Model.ProductList[i].Name" />
-                                            <input type="hidden" asp-for="@Model.ProductList[i].Id" /> 
+                                            <input type="hidden" asp-for="@Model.ProductList[i].Price" />
+                                            <input type="hidden" asp-for="@Model.ProductList[i].TempCount" />
+
 
                                             <li class="list-group-item d-flex justify-content-between">
                                                 <div>
                                                     <h6 class="my-0">@Model.ProductList[i].Name</h6>
-                                                    <small class="text-muted">Dish Price: @((@Model.ProductList[i].Price).ToString("c"))</small>
+                                                    <small class="text-muted">Count: @Model.ProductList[i].TempCount</small>
                                                 </div>
+
+                                                <span class="text-muted">@((Model.ProductList[i].Price * Model.ProductList[i].TempCount).ToString("c"))</span>
                                             </li>
+                                            orderTotal += Model.ProductList[i].Price * Model.ProductList[i].TempCount;
                                         }
+
+                                        <li class="list-group-item d-flex justify-content-between bg-light">
+                                            <small class="text-info"> Total:</small>
+                                            <strong class="text-info">@orderTotal.ToString("c")</strong>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

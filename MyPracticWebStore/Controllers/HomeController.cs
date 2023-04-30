@@ -33,7 +33,7 @@ namespace MyPracticWebStore.Controllers
         {
             var homeVM = new HomeVM()
             {
-                Products = _productRepository.GetAll(includePropirties: "Category"),
+                Products = _productRepository.GetAll(includePropirties: "Category").OrderBy(u => u.Category.DisplayOrder),
                 Categories = _categoryRepository.GetAll()
             };
             return View(homeVM);

@@ -29,6 +29,23 @@
 
                                         <p class="text-secondary">@Html.Raw(Model.Product.Description) </p>
                                     </div>
+
+                                    <div class="col-12">
+                                        Count:
+                                    </div>
+                                    <div class="col-12">
+                                        @if (Model.ExistsInCart)
+                                        {
+                                            <input asp-for="@Model.Product.TempCount" disabled class="form-control" />
+                                        }
+                                        else
+                                        {
+                                            <input asp-for="@Model.Product.TempCount" class="form-control" />
+                                        }
+                                        <span asp-validation-for="@Model.Product.TempCount" class="text-danger"></span>
+                                    </div>
+
+                                      
                                 </div>
                             </div>
                         </div>

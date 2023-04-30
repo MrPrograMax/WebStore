@@ -9,7 +9,7 @@ using WebPracticWebStore_Models.ViewModels;
 
 namespace MyPracticWebStore.Controllers
 {
-    [Authorize(WebConstants.AdminRole)]
+    [Authorize(Roles = WebConstants.AdminRole)]
     public class InquiryController : Controller
     {
         public readonly IInquiryHeaderRepository _inquiryHeaderRepository;
@@ -52,6 +52,7 @@ namespace MyPracticWebStore.Controllers
                 ShoppingCart shoppingCart = new ShoppingCart()
                 {
                     ProductId = detail.ProductId,
+                    Count = 1,
                 };
                 shoppingCartList.Add(shoppingCart);
             }

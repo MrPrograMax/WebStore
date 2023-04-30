@@ -14,6 +14,9 @@
         public const string Success = "Success";
         public const string Error = "Error";
 
+        public const string emailOrder = "webstoretest@mail.ru";
+        public const string emailSender = "maks.hokey@yandex.ru";
+
     }
 
 }
